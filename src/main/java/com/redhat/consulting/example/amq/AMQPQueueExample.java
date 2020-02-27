@@ -40,29 +40,28 @@ public class AMQPQueueExample {
       try {
 
          // Step 1. Create an amqp qpid 1.0 connection
-         connection = connectionFactory.createConnection("admin", "1qaz@WSX"); //(Configured in broker.xml in AMQ7)
+         connection = connectionFactory.createConnection("admin", "admin"); //(Configured in broker.xml in AMQ7)
          
-
          // Step 2. Create a session
          Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
          // Step 3. Create a sender
-         Queue queue = session.createQueue("addressTest");
+         Queue queue = session.createQueue("simpleQueue");
          MessageProducer sender = session.createProducer(queue);
 
          // Step 4. send a few simple message
          sender.send(session.createTextMessage("This is a test message"));
-         System.out.println("message sent to addressTest ");
+         System.out.println("message sent to simpleQueue: ");
          
          connection.start();
 
          // Step 5. create a moving receiver, this means the message will be removed from the queue
-         Queue queue2 = session.createQueue("addressTest");
-         MessageConsumer consumer = session.createConsumer(queue2);
+
+         MessageConsumer consumer = session.createConsumer(queue);
 
          //Step 7. receive the simple message
          TextMessage m = (TextMessage) consumer.receive(5000);
-         System.out.println("Message received from addressTest " + m.getText());
+         System.out.println("Message received from simpleQueue: " + m.getText());
 
       } finally {
          if (connection != null) {

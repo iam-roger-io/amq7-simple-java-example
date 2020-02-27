@@ -21,17 +21,20 @@
 			<version>0.45.0.redhat-00002</version>
 		</dependency>
 
+		<!-- This lib is not part of AMQ7, ARTEMIS.
+		Use pooled-jms lib.
+		 -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
 			<version>5.11.0.redhat-630416</version>
 		</dependency>
 
-<dependency>
-  <groupId>org.messaginghub</groupId>
-  <artifactId>pooled-jms</artifactId>
-  <version>1.0.4.redhat-00004</version>
-</dependency>
+		<dependency>
+			<groupId>org.messaginghub</groupId>
+			<artifactId>pooled-jms</artifactId>
+			<version>1.0.4.redhat-00004</version>
+		</dependency>
 
 	</dependencies>
 

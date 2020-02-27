@@ -15,14 +15,21 @@ import org.apache.qpid.jms.JmsConnectionFactory;
 
 /**
  * This example performe AMQP protocol under PooledConnectionFactory
+ * PooledConnectionFactory is not supported by Red Hat.
  * 
- * 
+ * @see JmsPoolConnectionFactory
  * @see LocalListener.java
  * 
  * @author rosantos@redhat.com
- *
+ * 
+ * AMQ 7 Broker and JmsPoolConnectionFactory supports JMS *2.0*. 
+ * Actually JmsPoolConnectionFactory project was forked from the PooledConnectionFactory(org.apache.activemq/activemq-pool)
+ * project  * and enhanced to provide JMS 2.0 functionality. 
+ * All the functions of JMS 2.0 cannot be used if you use PooledConnectionFactory.
+ * 
+ * 
  */
-public class AMQPPooled {
+public class AMQPPooledActiveMQ {
 
 	private PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory();
 	
@@ -40,7 +47,7 @@ public class AMQPPooled {
 		pooledConnectionFactory.setIdleTimeout(60000);
 		pooledConnectionFactory.setUseAnonymousProducers(false);
 		pooledConnectionFactory.start();
-
+				
 		Connection connection = null;
 		for (int i = 0; i < 50; i++) {
 
@@ -53,7 +60,7 @@ public class AMQPPooled {
 				// Step 2. Create a session
 				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-				Queue queue = session.createQueue("foo1");
+				Queue queue = session.createQueue("addressTest");
 
 				MessageConsumer consumer = session.createConsumer(queue);
 
@@ -71,7 +78,7 @@ public class AMQPPooled {
 		
 		Date start = new Date();
 		
-		AMQPPooled foo = new AMQPPooled();
+		AMQPPooledActiveMQ foo = new AMQPPooledActiveMQ();
 		foo.bootstrap();
 
 		Date end = new Date();

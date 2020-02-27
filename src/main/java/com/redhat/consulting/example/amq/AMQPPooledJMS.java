@@ -19,6 +19,11 @@ import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
  * 
  * @see LocalListener.java
  * 
+ * AMQ 7 Broker and JmsPoolConnectionFactory supports JMS *2.0*. 
+ * Actually JmsPoolConnectionFactory project was forked from the PooledConnectionFactory(org.apache.activemq/activemq-pool)
+ * project  and enhanced to provide JMS 2.0 functionality. 
+ * All the functions of JMS 2.0 cannot be used if you use PooledConnectionFactory.
+ * 
  * @author rosantos@redhat.com
  *
  */
@@ -31,18 +36,17 @@ public class AMQPPooledJMS {
 	public void bootstrap() throws Exception {
 
 		ConnectionFactory connectionFactory = new JmsConnectionFactory(
-				"failover:(amqp://127.0.0.1:61616,amqp://127.0.0.1:61617,amqp://127.0.0.1:61618,amqp://127.0.0.1:61619)?initialReconnectDelay=100");
+				"failover:(amqp://127.0.0.1:61616,amqp://127.0.0.1:61617,amqp://127.0.0.1:61618,amqp://127.0.0.1:61619)?initialReconnectDelay=100&clientFailureCheckPeriod=10000");
 		
 		jmsPollConnectionFactory.setConnectionFactory(connectionFactory);	
 		jmsPollConnectionFactory.setMaxConnections(50);
-		jmsPollConnectionFactory.setUseAnonymousProducers(false);
+		jmsPollConnectionFactory.setUseAnonymousProducers(false);		
 		jmsPollConnectionFactory.start();
 
 		Connection connection = null;
 		for (int i = 0; i < 1; i++) {
 
 			connection = jmsPollConnectionFactory.createConnection("admin", "1qaz@WSX");
-
 			connection.start();
 
 			for (int a = 0; a < 50; a++) {
